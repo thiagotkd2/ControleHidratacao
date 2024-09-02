@@ -1,0 +1,24 @@
+package com.thiago.agua;
+
+public class Copo {
+
+    private boolean cheio;
+    private float volume;
+
+    public Copo(float volume){
+        this.volume = volume;
+    }
+
+    public void beber(){
+        cheio = false;
+    }
+    public boolean isCheio(){
+        return cheio;
+    }
+    public float getVolume(){
+        return volume;
+    }
+    public void desbeber(){
+        cheio = true;
+    }
+}
