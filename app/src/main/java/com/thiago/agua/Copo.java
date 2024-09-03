@@ -7,6 +7,7 @@ public class Copo {
 
     public Copo(float volume){
         this.volume = volume;
+        this.cheio = true;
     }
 
     public void beber(){

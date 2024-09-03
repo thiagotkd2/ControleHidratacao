@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/app/src/test/java/com/thiago/agua/ExampleUnitTest.java
+/app/src/androidTest/java/com/thiago/agua/ExampleInstrumentedTest.java
