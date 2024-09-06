@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<data>
+<variable
+    name="vm"
+    type="com.thiago.agua.viewmodel.CopoViewModel" />
+    <variable
+        name="a"
+        type="com.thiago.agua.model.AguaDiaria" />
+<variable
+    name="adapter"
+    type="com.thiago.agua.AguaDiariaAdapter" />
+    <variable
+        name="vm2"
+        type="com.thiago.agua.viewmodel.AguaDiariaViewModel" />
+</data>
+
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+
 
     <EditText
         android:id="@+id/editTextText"
@@ -13,8 +35,8 @@
         android:layout_marginTop="8dp"
         android:background="@android:drawable/edit_text"
         android:ems="3"
-        android:inputType="numberDecimal"
-        android:text=""
+        android:inputType="text"
+        android:text="@={vm2.peso}"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,32 +57,36 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/cardview_shadow_end_color"
-
+        android:onClick="@{() -> vm2.calcular()}"
         android:text="@string/calcular"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/editTextText"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/gridLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="384dp"
+        android:layout_height="400dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="96dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaCopo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_column="0"
-            app:layout_row="0" />
-    </androidx.gridlayout.widget.GridLayout>
+            android:layout_marginBottom="2dp"
+            app:atualizarLista="@{vm2.coposViewModel}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:setAdapter="@{adapter}"
+            tools:listitem="@layout/layout_copo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="419dp"
         android:layout_height="135dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,10 +96,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FAE76E"
-            app:columnCount="3"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:rowCount="2">
+            app:layout_constraintStart_toStartOf="parent">
+
             <!-- app:layout_margin = 16 dp não funciona, mas android:margin:16dp sim  -->
 
 
@@ -97,21 +122,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:text="1,3 L"
+                android:text="@={vm2.bebeuAteAgora}"
                 android:textSize="32sp"
                 app:layout_column="2"
                 app:layout_columnWeight="1"
                 app:layout_row="0"
                 app:layout_rowWeight="1" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/btn12"
                 android:layout_width="wrap_content"
                 android:layout_height="6dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="2dp"
                 android:layout_marginTop="12dp"
-                android:background="match_parent"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_marginBottom="4dp"
+                android:backgroundTint="#F9E66E"
+                android:onClick="@{() -> vm2.zerar()}"
+                android:src="@android:drawable/ic_menu_revert"
                 app:layout_column="0"
                 app:layout_columnWeight="0.1"
                 app:layout_row="1"
@@ -135,7 +164,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
-                android:text="7 copos ou 950ml"
+                android:text="@={vm2.faltando}"
                 android:textSize="18sp"
                 app:layout_columnWeight="50"
                 app:layout_rowWeight="1.2" />
@@ -145,3 +174,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

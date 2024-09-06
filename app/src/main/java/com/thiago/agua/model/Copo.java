@@ -1,4 +1,4 @@
-package com.thiago.agua;
+package com.thiago.agua.model;
 
 public class Copo {
 

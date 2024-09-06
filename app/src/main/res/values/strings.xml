@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Agua</string>
     <string name="calcular">Calcular</string>
+    <string name="volumeCopo">Volume do copo</string>
+    <string name="volume">volume</string>
 </resources>
