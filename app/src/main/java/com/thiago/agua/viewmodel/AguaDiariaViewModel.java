@@ -121,10 +121,10 @@ public class AguaDiariaViewModel extends ViewModel {
     }
 
     public void zerar(){
-        peso.setValue(null);
-        bebeuAteAgora.setValue("0");
-        faltando.setValue("0");
-        coposViewModel.getValue().clear();
+        peso.postValue(null);
+        bebeuAteAgora.postValue("0");
+        faltando.postValue("0");
+        coposViewModel.postValue(new ArrayList<>());
         aguaDiaria=null;
     }
 }
