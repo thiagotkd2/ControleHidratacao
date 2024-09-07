@@ -5,16 +5,10 @@
 
 <data>
 <variable
-    name="vm"
-    type="com.thiago.agua.viewmodel.CopoViewModel" />
-    <variable
-        name="a"
-        type="com.thiago.agua.model.AguaDiaria" />
-<variable
     name="adapter"
     type="com.thiago.agua.AguaDiariaAdapter" />
     <variable
-        name="vm2"
+        name="vm"
         type="com.thiago.agua.viewmodel.AguaDiariaViewModel" />
 </data>
 
@@ -34,9 +28,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:background="@android:drawable/edit_text"
-        android:ems="3"
-        android:inputType="text"
-        android:text="@={vm2.peso}"
+        android:inputType="numberDecimal"
+        android:text="@={vm.peso}"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/cardview_shadow_end_color"
-        android:onClick="@{() -> vm2.calcular()}"
+        android:onClick="@{() -> vm.calcular()}"
         android:text="@string/calcular"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -79,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="2dp"
-            app:atualizarLista="@{vm2.coposViewModel}"
+            app:atualizarLista="@{vm.coposViewModel}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:setAdapter="@{adapter}"
             tools:listitem="@layout/layout_copo" />
@@ -121,13 +114,15 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:text="@={vm2.bebeuAteAgora}"
-                android:textSize="32sp"
+                android:layout_marginTop="24dp"
+                android:text="@{vm.bebeuAteAgora}"
+                android:textSize="18sp"
                 app:layout_column="2"
                 app:layout_columnWeight="1"
                 app:layout_row="0"
-                app:layout_rowWeight="1" />
+                app:layout_rowWeight="1"
+                tools:text="300ml"
+                />
 
             <ImageButton
                 android:id="@+id/btn12"
@@ -139,7 +134,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="4dp"
                 android:backgroundTint="#F9E66E"
-                android:onClick="@{() -> vm2.zerar()}"
+                android:onClick="@{() -> vm.zerar()}"
                 android:src="@android:drawable/ic_menu_revert"
                 app:layout_column="0"
                 app:layout_columnWeight="0.1"
@@ -162,12 +157,14 @@
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@={vm2.faltando}"
+                android:text="@{vm.faltando}"
                 android:textSize="18sp"
                 app:layout_columnWeight="50"
-                app:layout_rowWeight="1.2" />
+                app:layout_rowWeight="1.2"
+                tools:text="1800 ml ou\n10 copos"
+                />
 
         </androidx.gridlayout.widget.GridLayout>
 

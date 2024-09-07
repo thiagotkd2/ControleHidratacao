@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         LayAguaDiariaBinding.setLifecycleOwner(this);
 
         AguaDiariaViewModel vm = new ViewModelProvider(this).get(AguaDiariaViewModel.class);
-        LayAguaDiariaBinding.setVm2(vm);
+        LayAguaDiariaBinding.setVm(vm);
 
         vm.calcular();
         RecyclerView recyclerView = findViewById(R.id.listaCopo);
