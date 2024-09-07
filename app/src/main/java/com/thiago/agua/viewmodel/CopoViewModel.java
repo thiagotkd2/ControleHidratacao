@@ -8,38 +8,25 @@ import com.thiago.agua.R;
 import com.thiago.agua.model.Copo;
 
 public class CopoViewModel extends ViewModel {
-    private MutableLiveData<Integer> imagemCopo = new MutableLiveData<>();
+    private MutableLiveData<Integer> imagemCopo;
     private MutableLiveData<String> volume = new MutableLiveData<>();
     private boolean isBebido;
     private Copo copo;
 
     public CopoViewModel(){
         this.imagemCopo = new MutableLiveData<>(R.drawable.copo_colorido);
-        if(!(copo==null)) {
-            this.volume = new MutableLiveData<>(String.valueOf(copo.getVolume()));
-            this.isBebido = !copo.isCheio();
-        }
     }
 
     public Copo getCopo() {
         return copo;
     }
 
-    public void setImagemCopo(MutableLiveData<Integer> imagemCopo) {
-        this.imagemCopo = imagemCopo;
-    }
-
-    public void setVolume(MutableLiveData<String> volume) {
-        this.volume = volume;
-        copo = new Copo(Float.parseFloat(volume.getValue()));
-    }
-
-    public void setBebido(boolean bebido) {
-        isBebido = bebido;
-    }
-
     public void setCopo(Copo copo) {
         this.copo = copo;
+        if(!(copo==null)) {
+            this.volume = new MutableLiveData<>(String.valueOf(copo.getVolume()));
+            this.isBebido = !copo.isCheio();
+        }
     }
 
     public LiveData<Integer> getImagemCopo() {
@@ -54,13 +41,24 @@ public class CopoViewModel extends ViewModel {
         return isBebido;
     }
 
-    public void beber(){
-        this.isBebido=false;
+    private void beber(){
+        copo.beber();
+        this.isBebido=!copo.isCheio();
         imagemCopo.setValue(R.drawable.copo_cinza);
     }
 
-    public void desbeber(){
-        this.isBebido=true;
+    private void desbeber(){
+        copo.desbeber();
+        this.isBebido=!copo.isCheio();
         imagemCopo.setValue(R.drawable.copo_colorido);
+    }
+
+    public void toggleBeber(){
+        if (this.isBebido()){
+            desbeber();
+        }else {
+            beber();
+        }
+
     }
 }

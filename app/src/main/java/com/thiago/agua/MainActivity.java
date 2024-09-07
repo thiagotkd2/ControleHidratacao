@@ -1,6 +1,9 @@
 package com.thiago.agua;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -10,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -28,20 +32,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         LayoutAguadiariaBinding LayAguaDiariaBinding = DataBindingUtil.setContentView(this, R.layout.layout_aguadiaria);
         LayAguaDiariaBinding.setLifecycleOwner(this);
 
         AguaDiariaViewModel vm = new ViewModelProvider(this).get(AguaDiariaViewModel.class);
         LayAguaDiariaBinding.setVm2(vm);
 
+        vm.calcular();
         RecyclerView recyclerView = findViewById(R.id.listaCopo);
 
         int numberOfColumns = 6;
         GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns);
         recyclerView.setLayoutManager(layoutManager);
-        AguaDiariaAdapter adapter = new AguaDiariaAdapter(this, vm);
 
+        AguaDiariaAdapter adapter = new AguaDiariaAdapter(this, vm);
         LayAguaDiariaBinding.setAdapter(adapter);
+
         LayAguaDiariaBinding.executePendingBindings();
 
     }
@@ -49,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     @BindingAdapter("atualizarLista")
     public static void atualizarLista(RecyclerView view, List<CopoViewModel> copos) {
         AguaDiariaAdapter adapter = (AguaDiariaAdapter) view.getAdapter();
-
-        if (adapter != null && copos!=null)
+        Log.i("teste", "chamando");
+        if (adapter != null)
             adapter.atualizarLista(copos);
 
 

@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AguaDiariaViewModel extends ViewModel {
-    MutableLiveData<String> peso;
-    MutableLiveData<String> bebeuAteAgora;
-    MutableLiveData<String> faltando;
-    MutableLiveData<String> volume;
-    MutableLiveData<List<CopoViewModel>> coposViewModel = new MutableLiveData<>();
-    AguaDiaria aguaDiaria;
+    private MutableLiveData<String> peso;
+    private MutableLiveData<String> bebeuAteAgora;
+    private MutableLiveData<String> faltando;
+    private MutableLiveData<String> volume;
+    private MutableLiveData<List<CopoViewModel>> coposViewModel;
+    private AguaDiaria aguaDiaria;
 
     private final float volumeCopo = 150;
 
@@ -45,11 +45,11 @@ public class AguaDiariaViewModel extends ViewModel {
         bebeuAteAgora = new MutableLiveData<>();
         faltando = new MutableLiveData<>();
         volume = new MutableLiveData<>();
-        coposViewModel.setValue(new ArrayList<>());
+        coposViewModel=new MutableLiveData<>(new ArrayList<>());
     }
 
-    public void setCoposViewModel(MutableLiveData<List<CopoViewModel>> coposViewModel) {
-        this.coposViewModel = coposViewModel;
+    public void setCoposViewModel(List<CopoViewModel> coposViewModel) {
+        this.coposViewModel.setValue(coposViewModel);
     }
 
     public LiveData<List<CopoViewModel>> getCoposViewModel() {
@@ -58,14 +58,19 @@ public class AguaDiariaViewModel extends ViewModel {
 
     public MutableLiveData<String> getFaltando() {
         if (aguaDiaria!=null) {
-            faltando.setValue(String.valueOf(aguaDiaria.mililitrosBebidosAteAgora()));
+            faltando.setValue(String.valueOf((Float.parseFloat(peso.getValue())*35)-aguaDiaria.mililitrosBebidosAteAgora()));
             return faltando;
         }
-        faltando.setValue("");
+        faltando.setValue("0");
         return faltando;
     }
 
     public MutableLiveData<String> getBebeuAteAgora() {
+        if (aguaDiaria!=null) {
+            bebeuAteAgora.setValue(String.valueOf(aguaDiaria.mililitrosBebidosAteAgora()));
+            return bebeuAteAgora;
+        }
+        bebeuAteAgora.setValue("0");
         return bebeuAteAgora;
     }
 
@@ -74,39 +79,49 @@ public class AguaDiariaViewModel extends ViewModel {
     }
 
     public void calcular(){
-        Log.i("teste",this.peso.getValue());
-        faltando.setValue(String.valueOf(Float.parseFloat(peso.getValue())*35));
-        volume.setValue(faltando.getValue());
-        Log.i("teste", faltando.getValue());
-        aguaDiaria = new AguaDiaria(Float.parseFloat(peso.getValue()));
-        int numero_copos = (int)
-                Math.floor(Float.parseFloat(volume.getValue())/
-                        volumeCopo); // 1 copo
-        float resto = Float.parseFloat(volume.getValue())%volumeCopo;
+        Log.i("Teste", peso.getValue() + "");
+        if(peso.getValue()!=null){
+            faltando.setValue(String.valueOf(Float.parseFloat(peso.getValue())*35));
+            volume.setValue(faltando.getValue());
+            Log.i("teste", faltando.getValue());
+            aguaDiaria = new AguaDiaria(Float.parseFloat(peso.getValue()));
+            coposViewModel.getValue().clear();
 
-        for(int i = 0; i<numero_copos; i++){
-            Log.i("teste", "volume.getValue()");
-            CopoViewModel cvm = new CopoViewModel();
-            cvm.setCopo(new Copo(volumeCopo));
-            cvm.setVolume(new MutableLiveData<String>(String.valueOf(volumeCopo)));
-            coposViewModel.getValue().add(cvm);
-            aguaDiaria.addCopos(volumeCopo);
-        }
-        Log.i("teste", String.valueOf(resto));
-        if(resto>0) {
-            CopoViewModel cvm = new CopoViewModel();
-            cvm.setCopo(new Copo(resto));
-            cvm.setVolume(new MutableLiveData<String>(String.valueOf(resto)));
-            coposViewModel.getValue().add(cvm);
-            aguaDiaria.addCopos(resto);
-        }
 
-        if (this.coposViewModel.getValue().get(0).getCopo()!=null)
-            Log.i("teste",String.valueOf(this.coposViewModel.getValue().get(0).getCopo().getVolume()));
+            List<CopoViewModel> listCvm = new ArrayList<>();
+
+
+            int numero_copos = (int)
+                    Math.floor(Float.parseFloat(volume.getValue())/
+                            volumeCopo); // 1 copo
+            float resto = Float.parseFloat(volume.getValue())%volumeCopo;
+
+            for(int i = 0; i<numero_copos; i++){
+                Log.i("teste", "volume.getValue()");
+
+                Copo c = new Copo(volumeCopo);
+                CopoViewModel cvm = new CopoViewModel();
+                aguaDiaria.getCopos().add(c);
+                cvm.setCopo(c);
+                listCvm.add(cvm);
+            }
+
+            Log.i("teste", String.valueOf(resto));
+            if(resto>0) {
+                Copo c = new Copo(resto);
+                CopoViewModel cvm = new CopoViewModel();
+                aguaDiaria.getCopos().add(c);
+                cvm.setCopo(c);
+                listCvm.add(cvm);
+            }
+            coposViewModel.postValue(listCvm);
+
+        }
+        Log.i("test", String.valueOf(coposViewModel.hasActiveObservers()));
     }
 
     public void zerar(){
-        peso.setValue("");
+        peso.setValue(null);
         bebeuAteAgora.setValue("0");
         faltando.setValue("0");
         coposViewModel.getValue().clear();

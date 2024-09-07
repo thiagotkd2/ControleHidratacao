@@ -33,7 +33,7 @@ public class AguaDiariaAdapter extends RecyclerView.Adapter<AguaDiariaAdapter.Co
     public void atualizarLista(List<CopoViewModel> copos) {
         this.copos = copos;
         Log.i("teste", "Number of items: " + copos.size());
-        notifyDataSetChanged();
+        this.notifyDataSetChanged();
     }
 
     @NonNull
@@ -53,7 +53,7 @@ public class AguaDiariaAdapter extends RecyclerView.Adapter<AguaDiariaAdapter.Co
     @Override
     public int getItemCount() {
         Log.i("teste",String.valueOf(copos.size()));
-        return copos.size();
+        return aguaViewModel.getCoposViewModel().getValue().size();
     }
 
     static class CopoViewHolder extends RecyclerView.ViewHolder {
@@ -65,9 +65,7 @@ public class AguaDiariaAdapter extends RecyclerView.Adapter<AguaDiariaAdapter.Co
         }
 
         public void bind(CopoViewModel vm) {
-            binding.setCopo(vm.getCopo());
             binding.setVm(vm);
-
             binding.executePendingBindings();
         }
     }
